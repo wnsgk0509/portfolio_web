@@ -40,9 +40,12 @@ export function getAllMarkdownProjects(): Project[] {
 
       // 4. 팀 구성 / 역할 추출
       const teamSize = data.teamSize || extractField(content, ["팀구성", "팀 구성", "팀", "인원"]) || undefined;
-      const roleSectionText = extractSection(content, ["본인 역할", "역할", "Role"]);
-      const rawRole = data.role || extractField(content, ["역할", "Role"]) || (roleSectionText ? extractFirstParagraph(roleSectionText) : "풀스택 / 백엔드 개발");
-      const role = rawRole.replace(/\*\*/g, "").trim();
+      const roleSectionText = extractSection(content, ["본인 역할", "역할", "Role", "담당 역할"]);
+      const roleFromMeta = data.role || extractField(content, ["역할", "Role", "담당 역할", "담당역할"]);
+      const roleFromLead = roleSectionText ? extractFirstParagraph(roleSectionText) : null;
+      const rawRole = roleFromMeta || roleFromLead || "풀스택 / 백엔드 개발";
+      const role = rawRole.replace(/\*\*/g, "").replace(/`/g, "").trim();
+      const roleDetails = extractListSection(content, ["본인 역할", "담당 역할", "역할", "Role"]);
 
       // 5. 기술 스택 추출
       const techStack: string[] = Array.isArray(data.techStack)
@@ -72,6 +75,7 @@ export function getAllMarkdownProjects(): Project[] {
         period,
         summary,
         role,
+        roleDetails: roleDetails.length > 0 ? roleDetails : undefined,
         teamSize,
         techStack: techStack.length > 0 ? techStack : ["Java", "Spring", "Oracle DB"],
         githubUrl,
@@ -114,7 +118,14 @@ function extractHeading(content: string): string | null {
 function extractFirstParagraph(content: string): string | null {
   const cleaned = content.replace(/^#+.*$/gm, "").trim();
   const paragraphs = cleaned.split(/\r?\n\s*\r?\n/);
-  return paragraphs.length > 0 ? paragraphs[0].replace(/^[-*]\s+/gm, "").trim() : null;
+  for (const para of paragraphs) {
+    const trimmed = para.trim();
+    // 불릿 목록이 아닌 첫 번째 일반 요약 문단 탐색
+    if (trimmed && !trimmed.startsWith("- ") && !trimmed.startsWith("* ") && !/^\d+\.\s+/.test(trimmed)) {
+      return trimmed.replace(/\*\*/g, "").replace(/`/g, "").trim();
+    }
+  }
+  return paragraphs.length > 0 ? paragraphs[0].replace(/^[-*]\s+/gm, "").replace(/\*\*/g, "").trim() : null;
 }
 
 function extractGithubUrl(content: string): string | undefined {
@@ -235,34 +246,59 @@ function extractTroubleshooting(content: string): TroubleshootingItem[] {
   if (!sectionText) return [];
 
   const items: TroubleshootingItem[] = [];
-  // `### ` 소제목 단위로 분할
-  const blocks = sectionText.split(/(?=\r?\n###\s+)/);
 
-  for (const block of blocks) {
-    const trimmed = block.trim();
-    if (!trimmed) continue;
+  // 1) `### ` 소제목 단위로 분할된 경우
+  if (/###\s+/m.test(sectionText)) {
+    const blocks = sectionText.split(/(?=\r?\n###\s+)/);
 
-    // 1) 제목 추출: `### 1. 동일 브라우저 내 계정 전환 시 게시글 조회수 카운팅 오류`
-    const titleMatch = trimmed.match(/^###\s+(?:(?:\d+[\.\)])\s*)?([^\r\n]+)/m);
-    const title = titleMatch ? titleMatch[1].trim() : undefined;
+    for (const block of blocks) {
+      const trimmed = block.trim();
+      if (!trimmed) continue;
 
-    // 2) 문제 (Problem)
-    const problemMatch = trimmed.match(/[-*]?\s*\*\*(?:문제|문제 상황|Problem)\*\*\s*:\s*([^\r\n]+(?:\r?\n(?![*-]\s*\*\*)[^\r\n]+)*)/i);
-    // 3) 원인 (Cause)
-    const causeMatch = trimmed.match(/[-*]?\s*\*\*(?:원인|원인 분석|Cause)\*\*\s*:\s*([^\r\n]+(?:\r?\n(?![*-]\s*\*\*)[^\r\n]+)*)/i);
-    // 4) 해결 (Solution)
-    const solutionMatch = trimmed.match(/[-*]?\s*\*\*(?:해결|해결 방안|해결책|Solution)\*\*\s*:\s*([^\r\n]+(?:\r?\n(?![*-]\s*\*\*)[^\r\n]+)*)/i);
-    // 5) 결과 (Result)
-    const resultMatch = trimmed.match(/[-*]?\s*\*\*(?:결과|개선 결과|성과|Result)\*\*\s*:\s*([^\r\n]+(?:\r?\n(?![*-]\s*\*\*)[^\r\n]+)*)/i);
+      // 제목 추출: `### 1. 동일 브라우저 내 계정 전환 시 게시글 조회수 카운팅 오류`
+      const titleMatch = trimmed.match(/^###\s+(?:(?:\d+[\.\)])\s*)?([^\r\n]+)/m);
+      const title = titleMatch ? titleMatch[1].trim() : undefined;
 
-    if (problemMatch || solutionMatch || title) {
-      items.push({
-        title,
-        problem: problemMatch ? problemMatch[1].trim() : (title || "문제 상황 분석"),
-        cause: causeMatch ? causeMatch[1].trim() : undefined,
-        solution: solutionMatch ? solutionMatch[1].trim() : "로직 검증 및 리팩토링을 통해 이슈 해결",
-        result: resultMatch ? resultMatch[1].trim() : undefined,
-      });
+      // 문제 (Problem)
+      const problemMatch = trimmed.match(/[-*]?\s*\*\*(?:문제|문제 상황|Problem)\*\*\s*:\s*([^\r\n]+(?:\r?\n(?![*-]\s*\*\*)[^\r\n]+)*)/i);
+      // 원인 (Cause)
+      const causeMatch = trimmed.match(/[-*]?\s*\*\*(?:원인|원인 분석|Cause)\*\*\s*:\s*([^\r\n]+(?:\r?\n(?![*-]\s*\*\*)[^\r\n]+)*)/i);
+      // 해결 (Solution)
+      const solutionMatch = trimmed.match(/[-*]?\s*\*\*(?:해결|해결 방안|해결책|Solution)\*\*\s*:\s*([^\r\n]+(?:\r?\n(?![*-]\s*\*\*)[^\r\n]+)*)/i);
+      // 결과 (Result)
+      const resultMatch = trimmed.match(/[-*]?\s*\*\*(?:결과|개선 결과|성과|Result)\*\*\s*:\s*([^\r\n]+(?:\r?\n(?![*-]\s*\*\*)[^\r\n]+)*)/i);
+
+      if (problemMatch || solutionMatch || title) {
+        items.push({
+          title,
+          problem: problemMatch ? problemMatch[1].trim() : (title || "문제 상황 분석"),
+          cause: causeMatch ? causeMatch[1].trim() : undefined,
+          solution: solutionMatch ? solutionMatch[1].trim() : "로직 검증 및 리팩토링을 통해 이슈 해결",
+          result: resultMatch ? resultMatch[1].trim() : undefined,
+        });
+      }
+    }
+  } else {
+    // 2) 불릿 형태 `- **제목**: ...` 로 작성된 경우 호환성 지원
+    const blocks = sectionText.split(/(?=\r?\n[-*]\s+\*\*)/);
+
+    for (const block of blocks) {
+      const trimmed = block.trim();
+      if (!trimmed) continue;
+
+      const titleMatch = trimmed.match(/^[-*]\s+\*\*([^\*:]+)\*\*/m);
+      const title = titleMatch ? titleMatch[1].trim() : undefined;
+
+      const problemMatch = trimmed.match(/(?:[-*]\s*)?[_\*]*(?:문제|문제 원인|Problem)[_\*]*\s*:\s*([^\r\n]+(?:\r?\n(?![*-]\s*[_\*]*)[^\r\n]+)*)/i);
+      const solutionMatch = trimmed.match(/(?:[-*]\s*)?[_\*]*(?:해결|해결 로직|해결 방안|Solution)[_\*]*\s*:\s*([^\r\n]+(?:\r?\n(?![*-]\s*[_\*]*)[^\r\n]+)*)/i);
+
+      if (problemMatch || solutionMatch || title) {
+        items.push({
+          title,
+          problem: problemMatch ? problemMatch[1].trim() : (title || "문제 상황 분석"),
+          solution: solutionMatch ? solutionMatch[1].trim() : "로직 검증 및 리팩토링을 통해 이슈 해결",
+        });
+      }
     }
   }
 

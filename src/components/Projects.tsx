@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { 
   FolderGit2, 
-  ChevronRight
+  ChevronRight,
+  UserCheck
 } from "lucide-react";
 import GithubIcon from "@/components/GithubIcon";
 import { renderInlineMarkdown } from "@/components/FormattedText";
@@ -41,7 +42,8 @@ export default function Projects({ projects = [] }: ProjectsProps) {
           {displayProjects.map((project) => (
             <div
               key={project.id}
-              className="group bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 shadow-sm hover:border-emerald-600 hover:shadow-md transition-all flex flex-col justify-between"
+              onClick={() => setSelectedProject(project)}
+              className="group bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 shadow-sm hover:border-emerald-600 hover:shadow-md transition-all flex flex-col justify-between cursor-pointer"
             >
               <div className="space-y-4">
                 {/* 상단 메타 */}
@@ -65,9 +67,14 @@ export default function Projects({ projects = [] }: ProjectsProps) {
                 </div>
 
                 {/* 담당 역할 */}
-                <div className="text-xs text-slate-600 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                  <strong className="text-slate-800 block mb-0.5">역할 & 기여:</strong>
-                  {renderInlineMarkdown(project.role)}
+                <div className="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                  <div className="flex items-center gap-1.5 mb-1 text-slate-800 font-semibold">
+                    <UserCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                    <span>담당 역할</span>
+                  </div>
+                  <p className="line-clamp-2 leading-relaxed text-slate-700">
+                    {renderInlineMarkdown(project.role)}
+                  </p>
                 </div>
 
                 {/* 기술 스택 뱃지 */}
@@ -90,7 +97,8 @@ export default function Projects({ projects = [] }: ProjectsProps) {
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 transition-colors py-1.5 px-2 rounded-lg hover:bg-slate-100"
                   >
                     <GithubIcon className="w-4 h-4 text-slate-700" />
                     <span>GitHub</span>
@@ -100,8 +108,12 @@ export default function Projects({ projects = [] }: ProjectsProps) {
                 )}
 
                 <button
-                  onClick={() => setSelectedProject(project)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-700 hover:text-white transition-all shadow-xs"
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedProject(project);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-700 hover:text-white transition-all shadow-xs cursor-pointer active:scale-95"
                 >
                   <span>트러블 슈팅 & 상세 보기</span>
                   <ChevronRight className="w-3.5 h-3.5" />

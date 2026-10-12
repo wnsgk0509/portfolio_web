@@ -17,6 +17,7 @@ export interface Project {
   period: string;
   summary: string;
   role: string;
+  roleDetails?: string[];
   teamSize?: string;
   techStack: string[];
   githubUrl?: string;
