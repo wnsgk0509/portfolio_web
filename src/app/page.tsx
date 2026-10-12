@@ -11,7 +11,7 @@ export default function Home() {
   const markdownProjects = getAllMarkdownProjects();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-white text-slate-800 flex flex-col font-sans selection:bg-emerald-800 selection:text-white">
       {/* 헤더 네비게이션 */}
       <Header />
 

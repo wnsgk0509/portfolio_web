@@ -1,8 +1,14 @@
 export interface TroubleshootingItem {
+  title?: string;
   problem: string;
   cause?: string;
   solution: string;
   result?: string;
+}
+
+export interface FeatureGroup {
+  title: string;
+  items: string[];
 }
 
 export interface Project {
@@ -17,6 +23,7 @@ export interface Project {
   liveUrl?: string;
   description: string;
   coreFeatures: string[];
+  featureGroups?: FeatureGroup[];
   troubleshooting: TroubleshootingItem[];
   retrospective: string[];
 }
