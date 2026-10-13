@@ -32,12 +32,12 @@ export interface Project {
 export const sampleProjects: Project[] = [
   {
     id: "sample-project-1",
-    title: "사내 메신저 & 협업 웹 플랫폼 (예시 템플릿)",
+    title: "사내 메신저 & 협업 웹 플랫폼",
     period: "2025.07 ~ 2026.02",
     summary: "사내 업무 효율화를 위한 실시간 웹소켓 알림 및 게시판/문서 관리 협업 플랫폼",
     role: "백엔드 API 개발 및 유지보수, CS 이슈 대응, DB 쿼리 튜닝 (기여도 70%)",
     teamSize: "개발팀 4명",
-    techStack: ["Java", "Spring Boot", "MyBatis", "Oracle DB", "React", "JavaScript", "WebSocket"],
+    techStack: ["Java", "Spring Boot", "MyBatis", "OracleDB", "React", "JavaScript", "WebSocket"],
     githubUrl: "https://github.com/wnsgk0509",
     description: "실제 실무에서 발생한 사용자 피드백을 기반으로 레거시 코드를 리팩토링하고, 대량 데이터 조회 성능을 개선하며 안정적인 운영 환경을 구축한 프로젝트입니다.",
     coreFeatures: [

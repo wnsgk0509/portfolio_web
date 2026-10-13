@@ -91,11 +91,6 @@ export default function Skills() {
             </div>
           ))}
         </div>
-
-        {/* 기술 스택 추가 안내 팁 박스 */}
-        <div className="mt-8 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-center text-xs text-emerald-900">
-          💡 노션의 <strong>SKILL</strong> 페이지에 있는 세부 기술 스택(Spring Boot, Docker, AWS 등)도 언제든지 자유롭게 추가/업데이트할 수 있도록 모듈화되어 있습니다.
-        </div>
       </div>
     </section>
   );

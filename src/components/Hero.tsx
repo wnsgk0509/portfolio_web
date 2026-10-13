@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { 
-  Mail, 
-  Phone, 
-  Copy, 
-  Check, 
-  ArrowDown, 
+import {
+  Mail,
+  Phone,
+  Copy,
+  Check,
+  ArrowDown,
   Server,
   FileCheck2,
-  CalendarCheck
+  CalendarCheck,
 } from "lucide-react";
 import GithubIcon from "@/components/GithubIcon";
 import { profileData } from "@/data/profile";
@@ -41,16 +41,22 @@ export default function Hero() {
 
           {/* 메인 타이틀: 사용자 요청 문구 반영 */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            신입 개발자 <span className="text-emerald-800">이준하</span>의
+            신입 풀스택 개발자 <span className="text-emerald-800">이준하</span>
+            의
             <br />
             포트폴리오
           </h1>
 
           {/* 한 줄 소개 */}
           <p className="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed font-normal">
-            안정적인 시스템 운영과 꼼꼼한 테스트, 그리고 CS 이슈 대응을 통해
+            Spring Framework 백엔드부터 React 프론트엔드까지, 8개월의 실무 운영
+            경험을 바탕으로
             <br className="hidden sm:inline" />
-            실제 서비스의 품질을 높이는 <strong className="text-slate-800 font-semibold">{profileData.experience}</strong>입니다.
+            엔드투엔드 가치를 만들어가는{" "}
+            <strong className="text-slate-800 font-semibold">
+              {profileData.experience}
+            </strong>
+            입니다.
           </p>
 
           {/* 핵심 포인트 키워드 카드 3개 */}
@@ -58,28 +64,46 @@ export default function Hero() {
             <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-emerald-600 transition-all">
               <div className="flex items-center gap-2.5 text-emerald-700 mb-1.5">
                 <CalendarCheck className="w-4 h-4" />
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Experience</span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Experience
+                </span>
               </div>
-              <p className="text-sm font-semibold text-slate-800">인턴 8개월 실무 유지보수</p>
-              <p className="text-xs text-slate-500 mt-0.5">로직/디자인 수정 및 CS 대응</p>
+              <p className="text-sm font-semibold text-slate-800">
+                인턴 8개월 실무 유지보수
+              </p>
+              <p className="text-xs text-slate-500 mt-0.5">
+                로직/디자인 수정 및 CS 대응
+              </p>
             </div>
 
             <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-emerald-600 transition-all">
               <div className="flex items-center gap-2.5 text-emerald-700 mb-1.5">
                 <Server className="w-4 h-4" />
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Backend Focus</span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Full-Stack Core
+                </span>
               </div>
-              <p className="text-sm font-semibold text-slate-800">Java · MyBatis · Oracle DB</p>
-              <p className="text-xs text-slate-500 mt-0.5">Rest API 설계 & 데이터 영속화</p>
+              <p className="text-sm font-semibold text-slate-800">
+                Spring · Java · React
+              </p>
+              <p className="text-xs text-slate-500 mt-0.5">
+                MyBatis · OracleDB & REST API
+              </p>
             </div>
 
             <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-emerald-600 transition-all">
               <div className="flex items-center gap-2.5 text-emerald-700 mb-1.5">
                 <FileCheck2 className="w-4 h-4" />
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Reliability</span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Reliability
+                </span>
               </div>
-              <p className="text-sm font-semibold text-slate-800">철저한 사전 테스트 & 문서화</p>
-              <p className="text-xs text-slate-500 mt-0.5">배포 안정성 및 무중단 지향</p>
+              <p className="text-sm font-semibold text-slate-800">
+                철저한 사전 테스트 & 문서화
+              </p>
+              <p className="text-xs text-slate-500 mt-0.5">
+                배포 안정성 및 무중단 지향
+              </p>
             </div>
           </div>
 

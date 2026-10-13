@@ -44,7 +44,7 @@ export default function Header() {
           <span>
             {profileData.name}
             <span className="text-emerald-800 font-semibold ml-1.5 text-xs bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-              Backend
+              Full-Stack Developer
             </span>
           </span>
         </a>
@@ -97,7 +97,11 @@ export default function Header() {
             className="p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors"
             aria-label="메뉴 열기"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>

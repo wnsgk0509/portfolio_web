@@ -12,7 +12,7 @@
 # 프로젝트 이름
 
 URL: https://github.com/wnsgk0509/your-repo-name
-기술: Java, Spring Boot, MyBatis, Oracle DB, React
+기술: Java, Spring Boot, MyBatis, OracleDB, React
 날짜: 2026년 00월 00일 → 2026년 00월 00일
 팀구성: 협업 (4명)
 역할: 백엔드 API 개발 및 DB 설계, 성능 최적화
@@ -22,7 +22,7 @@ URL: https://github.com/wnsgk0509/your-repo-name
 **프로젝트명**에 대한 핵심 요약 및 개요를 서술합니다. 어떤 문제를 해결하기 위해 시작된 프로젝트인지, 주요 사용자 층과 비즈니스 목표를 작성합니다.
 
 - **Backend**: Java 17, Spring Boot 3.x, MyBatis
-- **Database**: Oracle DB 19c
+- **Database**: OracleDB 19c
 - **Frontend**: React, TypeScript, Tailwind CSS
 - **협업 & 형상관리**: Git, GitHub (Git-flow)
 

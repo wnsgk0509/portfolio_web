@@ -77,7 +77,7 @@ export function getAllMarkdownProjects(): Project[] {
         role,
         roleDetails: roleDetails.length > 0 ? roleDetails : undefined,
         teamSize,
-        techStack: techStack.length > 0 ? techStack : ["Java", "Spring", "Oracle DB"],
+        techStack: techStack.length > 0 ? techStack : ["Java", "Spring", "OracleDB"],
         githubUrl,
         liveUrl: data.liveUrl || undefined,
         description: description || summary,

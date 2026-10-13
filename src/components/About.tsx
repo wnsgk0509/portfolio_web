@@ -88,7 +88,7 @@ export default function About() {
                 <span className="text-slate-500 flex items-center gap-1.5">
                   <Briefcase className="w-3.5 h-3.5 text-slate-400" /> 희망 직무
                 </span>
-                <span className="font-medium text-slate-800 text-right">백엔드 / 서버 개발자</span>
+                <span className="font-medium text-slate-800 text-right">풀스택 개발자 (Full-Stack)</span>
               </div>
             </div>
 

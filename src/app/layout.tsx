@@ -13,13 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "신입 개발자 이준하의 포트폴리오",
-  description: "8개월 실무 인턴 경험을 가진 신입 백엔드 개발자 이준하의 포트폴리오입니다. 서비스 유지보수, 안정적인 배포, CS 대응 및 트러블 슈팅 경험을 소개합니다.",
-  keywords: ["이준하", "백엔드 개발자", "신입 개발자", "포트폴리오", "Java", "Spring", "React", "MyBatis", "OracleDB"],
+  title: "신입 풀스택 개발자 이준하의 포트폴리오",
+  description: "Spring Framework 백엔드와 React 프론트엔드를 아우르는 8개월 실무 인턴 경험의 신입 풀스택 개발자 이준하의 포트폴리오입니다.",
+  keywords: ["이준하", "풀스택 개발자", "신입 개발자", "포트폴리오", "Java", "Spring", "React", "MyBatis", "OracleDB", "Full Stack Developer"],
   authors: [{ name: "이준하", url: "https://github.com/wnsgk0509" }],
   openGraph: {
-    title: "신입 개발자 이준하의 포트폴리오",
-    description: "8개월 실무 인턴 경험을 가진 신입 백엔드 개발자 이준하의 포트폴리오",
+    title: "신입 풀스택 개발자 이준하의 포트폴리오",
+    description: "Spring Framework 백엔드와 React 프론트엔드를 아우르는 신입 풀스택 개발자 이준하의 포트폴리오",
     type: "website",
     url: "https://github.com/wnsgk0509",
   },
