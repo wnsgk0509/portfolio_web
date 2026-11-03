@@ -1,6 +1,10 @@
+---
+published: true
+---
 # 잠깐 (Jamkkan) - 디지털 디톡스 서비스
 
 URL: https://github.com/wnsgk0509/first_button
+도메인: https://wnsgk0509.github.io/first_button/
 기술: React Native, TypeScript, Android Kotlin, Supabase, PWA
 날짜: 2026년 10월 21일 → 2026년 10월 29일
 팀구성: 개인 프로젝트

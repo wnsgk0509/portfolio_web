@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { 
   FolderGit2, 
   ChevronRight,
-  UserCheck
+  UserCheck,
+  Globe
 } from "lucide-react";
 import GithubIcon from "@/components/GithubIcon";
 import { renderInlineMarkdown } from "@/components/FormattedText";
@@ -46,6 +47,17 @@ export default function Projects({ projects = [] }: ProjectsProps) {
               className="group bg-white border border-slate-200 rounded-2xl p-6 sm:p-7 shadow-sm hover:border-emerald-600 hover:shadow-md transition-all flex flex-col justify-between cursor-pointer"
             >
               <div className="space-y-4">
+                {/* 썸네일 이미지 */}
+                {project.thumbnail && (
+                  <div className="relative w-full h-44 sm:h-48 overflow-hidden rounded-xl border border-slate-200/90 bg-slate-50">
+                    <img 
+                      src={project.thumbnail} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                )}
+
                 {/* 상단 메타 */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 group-hover:bg-emerald-100 transition-colors">
@@ -92,20 +104,32 @@ export default function Projects({ projects = [] }: ProjectsProps) {
 
               {/* 하단 액션 버튼 */}
               <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between">
-                {project.githubUrl ? (
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 transition-colors py-1.5 px-2 rounded-lg hover:bg-slate-100"
-                  >
-                    <GithubIcon className="w-4 h-4 text-slate-700" />
-                    <span>GitHub</span>
-                  </a>
-                ) : (
-                  <div />
-                )}
+                <div className="flex flex-wrap items-center gap-2">
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 transition-colors py-1.5 px-2 rounded-lg hover:bg-slate-100"
+                    >
+                      <GithubIcon className="w-4 h-4 text-slate-700" />
+                      <span>GitHub</span>
+                    </a>
+                  )}
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 hover:text-emerald-900 transition-colors py-1.5 px-2.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-200"
+                    >
+                      <Globe className="w-3.5 h-3.5" />
+                      <span>배포 사이트</span>
+                    </a>
+                  )}
+                </div>
 
                 <button
                   type="button"

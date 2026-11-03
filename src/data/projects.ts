@@ -27,6 +27,9 @@ export interface Project {
   featureGroups?: FeatureGroup[];
   troubleshooting: TroubleshootingItem[];
   retrospective: string[];
+  published?: boolean;
+  order?: number;
+  thumbnail?: string;
 }
 
 export const sampleProjects: Project[] = [

@@ -27,6 +27,9 @@ export function getAllMarkdownProjects(): Project[] {
 
     try {
       const { data, content } = matter(fileContents);
+      if (data.published === false) {
+        continue;
+      }
       const id = fileName.replace(/\.md$/, "");
 
       // 1. 기본 제목 추출
@@ -69,6 +72,21 @@ export function getAllMarkdownProjects(): Project[] {
       // 9. 배운 점 및 회고 파싱
       const retrospective = extractListSection(content, ["배운점", "배운 점", "회고", "배운 점 및 회고", "배운점 및 회고"]);
 
+
+      // 썸네일 이미지 자동 매핑
+      let thumbnail = data.thumbnail || data.image || undefined;
+      if (!thumbnail) {
+        const lowerId = id.toLowerCase();
+        const lowerTitle = title.toLowerCase();
+        if (lowerId.includes("provit") || lowerTitle.includes("provit")) {
+          thumbnail = "/projects/provit.png";
+        } else if (lowerId.includes("gitfolio") || lowerTitle.includes("gitfolio") || lowerTitle.includes("포트폴리오")) {
+          thumbnail = "/projects/gitfolio.png";
+        } else if (lowerId.includes("jamkkan") || lowerTitle.includes("jamkkan") || lowerTitle.includes("잠깐")) {
+          thumbnail = "/projects/jamkkan.png";
+        }
+      }
+
       projects.push({
         id,
         title,
@@ -79,7 +97,7 @@ export function getAllMarkdownProjects(): Project[] {
         teamSize,
         techStack: techStack.length > 0 ? techStack : ["Java", "Spring", "OracleDB"],
         githubUrl,
-        liveUrl: data.liveUrl || undefined,
+        liveUrl: extractLiveUrl(content, data.liveUrl),
         description: description || summary,
         coreFeatures: flatCoreFeatures.length > 0 ? flatCoreFeatures : ["핵심 서비스 기능 구현"],
         featureGroups: featureGroups.length > 0 ? featureGroups : undefined,
@@ -92,6 +110,10 @@ export function getAllMarkdownProjects(): Project[] {
         retrospective: retrospective.length > 0 ? retrospective : [
           "실제 서비스 개발 및 운영 관점에서의 테스트와 예외 처리 중요성을 체득했습니다."
         ]
+      ,
+        published: data.published !== false,
+        order: data.order !== undefined ? Number(data.order) : undefined,
+        thumbnail: thumbnail || undefined
       });
     } catch (e) {
       console.error(`Error parsing markdown project ${fileName}:`, e);
@@ -303,4 +325,28 @@ function extractTroubleshooting(content: string): TroubleshootingItem[] {
   }
 
   return items;
+}
+
+function extractLiveUrl(content: string, metaUrl?: string): string | undefined {
+  if (metaUrl && typeof metaUrl === "string" && metaUrl.trim()) return metaUrl.trim();
+
+  // 1) 상단 메타데이터 도메인/배포/서비스/Live URL 패턴
+  const fieldNames = ["도메인", "배포", "배포 URL", "서비스 URL", "Live", "Live URL", "사이트", "웹사이트", "데모", "Demo"];
+  for (const name of fieldNames) {
+    const regex = new RegExp(`^[\\t ]*[-*]?[\\t ]*(?:\\[[\\t ]*)?${name}[^\\r\\n:]*:[\\t ]*([^\\r\\n]+)`, "im");
+    const match = content.match(regex);
+    if (match && match[1].trim()) {
+      const urlMatch = match[1].match(/https?:\/\/[^\s\)\"\'`>]+/i);
+      if (urlMatch) return urlMatch[0].trim();
+      return match[1].trim();
+    }
+  }
+
+  // 2) 마크다운 링크 패턴 [바로가기](https://...) 중 github가 아닌 실제 도메인 링크
+  const linkMatch = content.match(/\[(?:[^\n\]]*(?:바로가기|배포|서비스|웹사이트|데모|Live|Site|Demo|PWA)[^\n\]]*)\]\((https?:\/\/(?!github\.com)[^\s\)\"\']+)\)/i);
+  if (linkMatch) {
+    return linkMatch[1].trim();
+  }
+
+  return undefined;
 }
