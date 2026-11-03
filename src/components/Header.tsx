@@ -1,8 +1,7 @@
 "use client";
-import Link from "next/link";
 
 import React, { useState, useEffect } from "react";
-import { Mail, Menu, X, Terminal, Sparkles } from "lucide-react";
+import { Mail, Menu, X, Terminal } from "lucide-react";
 import GithubIcon from "@/components/GithubIcon";
 import { profileData } from "@/data/profile";
 
@@ -64,14 +63,7 @@ export default function Header() {
         </nav>
 
         {/* 데스크톱 우측 액션 */}
-        <div className="hidden md:flex items-center gap-2.5">
-          <Link
-            href="/builder"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 transition-colors shadow-2xs"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-            <span>AI 포폴 생성기</span>
-          </Link>
+        <div className="hidden md:flex items-center gap-3">
           <a
             href={profileData.github}
             target="_blank"
