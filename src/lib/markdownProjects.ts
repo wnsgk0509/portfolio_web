@@ -84,6 +84,8 @@ export function getAllMarkdownProjects(): Project[] {
           thumbnail = "/projects/gitfolio.png";
         } else if (lowerId.includes("jamkkan") || lowerTitle.includes("jamkkan") || lowerTitle.includes("잠깐")) {
           thumbnail = "/projects/jamkkan.png";
+        } else if (lowerId.includes("1lev") || lowerTitle.includes("1lev") || lowerTitle.includes("루틴")) {
+          thumbnail = "/projects/1lev_up.png";
         }
       }
 
