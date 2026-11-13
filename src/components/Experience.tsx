@@ -4,7 +4,10 @@ import {
   GraduationCap, 
   Award, 
   Calendar, 
-  Check
+  Check,
+  BookOpen,
+  Sparkles,
+  Clock
 } from "lucide-react";
 import { profileData } from "@/data/profile";
 
@@ -15,16 +18,17 @@ export default function Experience() {
         {/* 섹션 헤더 */}
         <div className="flex flex-col items-center text-center mb-16">
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 mb-3">
-            Career & Education
+            Career · Education · Training
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
-            경력 · 학력 · 자격증
+            경력 · 학력 · 교육 훈련
           </h2>
           <div className="w-12 h-1 bg-emerald-700 rounded mt-4" />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* 1. 실무 경력 (Career) */}
+        {/* 1. 실무 경력 & 학력/자격증 상단 그리드 */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          {/* 실무 경력 (Career) */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center gap-2.5 text-lg font-bold text-slate-900">
               <span className="p-2 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700">
@@ -78,7 +82,7 @@ export default function Experience() {
             ))}
           </div>
 
-          {/* 2. 학력 & 자격증 (Education & Certificate) */}
+          {/* 학력 & 자격증 (Education & Certificate) */}
           <div className="space-y-8">
             {/* 학력 카드 */}
             <div className="space-y-4">
@@ -142,6 +146,99 @@ export default function Experience() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* 2. 직무 교육 및 훈련 (Training & Bootcamps) */}
+        <div className="space-y-6 pt-6 border-t border-slate-100">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5 text-lg font-bold text-slate-900">
+              <span className="p-2 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700">
+                <BookOpen className="w-5 h-5" />
+              </span>
+              <span>직무 교육 및 전문 훈련 과정 (Training & Education)</span>
+            </div>
+            <span className="text-xs font-medium text-slate-500">
+              총 {profileData.training?.length || 0}개 과정
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {(profileData.training || []).map((t, idx) => {
+              const isOngoing = t.status === "진행 중";
+              const isCompleted = t.status === "수료";
+
+              return (
+                <div
+                  key={idx}
+                  className={`relative bg-white border rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-all ${
+                    isOngoing 
+                      ? "border-emerald-500/80 ring-2 ring-emerald-500/10" 
+                      : "border-slate-200 hover:border-emerald-600"
+                  }`}
+                >
+                  <div className="space-y-3.5">
+                    {/* 상단 뱃지 & 기간 */}
+                    <div className="flex items-start justify-between gap-2">
+                      <span
+                        className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${
+                          isOngoing
+                            ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+                            : isCompleted
+                            ? "bg-blue-50 text-blue-800 border-blue-200"
+                            : "bg-slate-100 text-slate-700 border-slate-200"
+                        }`}
+                      >
+                        {isOngoing && <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />}
+                        {t.status}
+                      </span>
+
+                      {t.durationDays && (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-500 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
+                          <Clock className="w-3 h-3 text-slate-400" />
+                          <span>{t.durationDays}</span>
+                        </span>
+                      )}
+                    </div>
+
+                    {/* 과정명 & 기관명 */}
+                    <div>
+                      <h4 className="text-base font-bold text-slate-900 leading-snug">
+                        {t.title}
+                      </h4>
+                      <p className="text-xs font-semibold text-emerald-800 mt-1.5">
+                        {t.institution}
+                      </p>
+                    </div>
+
+                    {/* 진행 기간 */}
+                    <div className="flex items-center gap-1.5 text-xs text-slate-500 pt-1 border-t border-slate-100">
+                      <Calendar className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                      <span>{t.period}</span>
+                    </div>
+
+                    {/* 상세 설명 */}
+                    <p className="text-xs text-slate-600 leading-relaxed pt-1">
+                      {t.description}
+                    </p>
+                  </div>
+
+                  {/* 기술 태그 목록 */}
+                  {t.skills && t.skills.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 pt-4 mt-4 border-t border-slate-100">
+                      {t.skills.map((skill, sIdx) => (
+                        <span
+                          key={sIdx}
+                          className="px-2 py-0.5 text-[11px] font-medium rounded-md bg-slate-50 text-slate-600 border border-slate-200"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
