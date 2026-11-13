@@ -23,6 +23,10 @@ export function getAllMarkdownProjects(): Project[] {
     }
 
     const fullPath = path.join(projectsDirectory, fileName);
+    // 하위 폴더(archive 등) 건너뛰기
+    if (!fs.statSync(fullPath).isFile()) {
+      continue;
+    }
     const fileContents = fs.readFileSync(fullPath, "utf8");
 
     try {
