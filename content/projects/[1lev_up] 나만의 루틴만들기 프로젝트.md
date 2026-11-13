@@ -1,3 +1,21 @@
+---
+title: "1lev_up - 나만의 최소 루틴 & 습관 관리 시스템"
+period: "2026.11"
+role: "프론트엔드 UI 및 오프라인 아키텍처 1인 개발 (기여도 100%)"
+techStack: ["React", "TypeScript", "Tailwind CSS", "Supabase", "Vite", "PWA"]
+githubUrl: "https://github.com/wnsgk0509/1lev_up"
+published: true
+order: 1
+---
+
+# 1lev_up - 나만의 최소 루틴 & 습관 관리 시스템
+
+URL: https://github.com/wnsgk0509/1lev_up
+기술: React, TypeScript, Tailwind CSS, Supabase, Vite, PWA
+날짜: 2026년 11월
+팀구성: 개인 프로젝트
+역할: 프론트엔드 UI 및 오프라인 아키텍처 1인 개발 (기여도 100%)
+
 ## 프로젝트 소개
 
 * **서비스명**: 1lev_up (하루 1레벨 업 최소 습관 & 루틴 시스템)
