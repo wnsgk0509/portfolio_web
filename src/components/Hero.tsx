@@ -36,7 +36,7 @@ export default function Hero() {
           {/* 상단 뱃지 */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-medium">
             <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
-            <span>실무 인턴 8개월 경험 보유 & 풀스택 수료</span>
+            <span>실무 인턴 7개월 경험 보유 & 풀스택 수료</span>
           </div>
 
           {/* 메인 타이틀: 사용자 요청 문구 반영 */}
@@ -49,7 +49,7 @@ export default function Hero() {
 
           {/* 한 줄 소개 */}
           <p className="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed font-normal">
-            Spring Framework 백엔드부터 React 프론트엔드까지, 8개월의 실무 운영
+            Spring Framework 백엔드부터 React 프론트엔드까지, 7개월의 실무 운영
             경험을 바탕으로
             <br className="hidden sm:inline" />
             엔드투엔드 가치를 만들어가는{" "}
@@ -69,7 +69,7 @@ export default function Hero() {
                 </span>
               </div>
               <p className="text-sm font-semibold text-slate-800">
-                인턴 8개월 실무 유지보수
+                인턴 7개월 실무 유지보수
               </p>
               <p className="text-xs text-slate-500 mt-0.5">
                 로직/디자인 수정 및 CS 대응
