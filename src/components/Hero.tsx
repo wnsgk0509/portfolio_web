@@ -73,10 +73,10 @@ export default function Hero() {
                 </span>
               </div>
               <p className="text-sm font-semibold text-slate-800">
-                AI 서비스 & 고속 MVP 완주
+                AI 서비스 기획 & 개발
               </p>
               <p className="text-xs text-slate-500 mt-0.5">
-                Gemini Map-Reduce · AI 활용 기획/구현
+                사용자 관점 기획 · AI 활용 구현
               </p>
             </div>
 
@@ -91,7 +91,7 @@ export default function Hero() {
                 Java · Spring · React · TS
               </p>
               <p className="text-xs text-slate-500 mt-0.5">
-                MySQL · Supabase · PWA & RN 확장
+                MySQL · OracleDB · REST API
               </p>
             </div>
 
@@ -103,10 +103,10 @@ export default function Hero() {
                 </span>
               </div>
               <p className="text-sm font-semibold text-slate-800">
-                실무 Linux 점검 · 정량 검증
+                실무 Linux 점검 · 품질 검증
               </p>
               <p className="text-xs text-slate-500 mt-0.5">
-                고객사 정기점검 · QA · 번들 93.5% 감축
+                고객사 서버 정기점검 · 배포 전 QA
               </p>
             </div>
           </div>
