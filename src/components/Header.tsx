@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Mail, Menu, X, Terminal } from "lucide-react";
+import Link from "next/link";
+import { Mail, Menu, X, Terminal, FileText } from "lucide-react";
 import GithubIcon from "@/components/GithubIcon";
 import { profileData } from "@/data/profile";
 
@@ -44,7 +45,7 @@ export default function Header() {
           <span>
             {profileData.name}
             <span className="text-emerald-800 font-semibold ml-1.5 text-xs bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-              Full-Stack Developer
+              {profileData.headerBadge}
             </span>
           </span>
         </a>
@@ -63,7 +64,7 @@ export default function Header() {
         </nav>
 
         {/* 데스크톱 우측 액션 */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2.5">
           <a
             href={profileData.github}
             target="_blank"
@@ -73,6 +74,13 @@ export default function Header() {
           >
             <GithubIcon className="w-5 h-5" />
           </a>
+          <Link
+            href="/resume"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 transition-all"
+          >
+            <FileText className="w-3.5 h-3.5 text-emerald-700" />
+            <span>이력서 (PDF)</span>
+          </Link>
           <a
             href={`mailto:${profileData.email}`}
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-700 hover:bg-emerald-800 text-white transition-all shadow-sm"
@@ -84,6 +92,13 @@ export default function Header() {
 
         {/* 모바일 햄버거 버튼 */}
         <div className="flex md:hidden items-center gap-2">
+          <Link
+            href="/resume"
+            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            <span>이력서</span>
+          </Link>
           <a
             href={profileData.github}
             target="_blank"
@@ -119,7 +134,15 @@ export default function Header() {
               {link.name}
             </a>
           ))}
-          <div className="pt-3">
+          <div className="pt-3 flex flex-col gap-2">
+            <Link
+              href="/resume"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200"
+            >
+              <FileText className="w-4 h-4 text-emerald-700" />
+              <span>이력서 보기 / PDF 저장</span>
+            </Link>
             <a
               href={`mailto:${profileData.email}`}
               className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-semibold bg-emerald-700 hover:bg-emerald-800 text-white shadow-sm"

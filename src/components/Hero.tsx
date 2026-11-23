@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import {
   Mail,
   Phone,
@@ -8,8 +9,9 @@ import {
   Check,
   ArrowDown,
   Server,
-  FileCheck2,
-  CalendarCheck,
+  Sparkles,
+  ShieldCheck,
+  FileText,
 } from "lucide-react";
 import GithubIcon from "@/components/GithubIcon";
 import { profileData } from "@/data/profile";
@@ -36,43 +38,45 @@ export default function Hero() {
           {/* 상단 뱃지 */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-medium">
             <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
-            <span>실무 인턴 7개월 경험 보유 & 풀스택 수료</span>
+            <span>실무 인턴 7개월(운영·점검) · AI/풀스택 · 즉시 입사 가능</span>
           </div>
 
-          {/* 메인 타이틀: 사용자 요청 문구 반영 */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            신입 풀스택 개발자 <span className="text-emerald-800">이준하</span>
-            의
+          {/* 메인 타이틀 */}
+          <h1 className="text-3xl sm:text-5xl md:text-[52px] font-extrabold text-slate-900 tracking-tight leading-tight">
+            기획부터 개발·검증·운영까지
             <br />
-            포트폴리오
+            <span className="text-emerald-800">AI 서비스 풀스택 개발자 이준하</span>
           </h1>
 
           {/* 한 줄 소개 */}
           <p className="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed font-normal">
-            Spring Framework 백엔드부터 React 프론트엔드까지, 7개월의 실무 운영
-            경험을 바탕으로
-            <br className="hidden sm:inline" />
-            엔드투엔드 가치를 만들어가는{" "}
+            Java/Spring·React·TypeScript 풀스택에{" "}
             <strong className="text-slate-800 font-semibold">
-              {profileData.experience}
+              LLM 파이프라인과 AI 개발 워크플로우
             </strong>
-            입니다.
+            를 결합하고,
+            <br className="hidden sm:inline" />
+            7개월의 실무 운영·정기점검 경험으로{" "}
+            <strong className="text-slate-800 font-semibold">
+              끝까지 검증된 서비스
+            </strong>
+            를 만듭니다.
           </p>
 
-          {/* 핵심 포인트 키워드 카드 3개 */}
+          {/* 핵심 포인트 키워드 카드 3개 (기획/AI - 개발 - 검증/운영) */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 pb-4 text-left">
             <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-emerald-600 transition-all">
               <div className="flex items-center gap-2.5 text-emerald-700 mb-1.5">
-                <CalendarCheck className="w-4 h-4" />
+                <Sparkles className="w-4 h-4" />
                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  Experience
+                  Planning & AI
                 </span>
               </div>
               <p className="text-sm font-semibold text-slate-800">
-                인턴 7개월 실무 유지보수
+                AI 서비스 & 고속 MVP 완주
               </p>
               <p className="text-xs text-slate-500 mt-0.5">
-                로직/디자인 수정 및 CS 대응
+                Gemini Map-Reduce · AI 활용 기획/구현
               </p>
             </div>
 
@@ -80,35 +84,44 @@ export default function Hero() {
               <div className="flex items-center gap-2.5 text-emerald-700 mb-1.5">
                 <Server className="w-4 h-4" />
                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  Full-Stack Core
+                  Full-Stack Dev
                 </span>
               </div>
               <p className="text-sm font-semibold text-slate-800">
-                Spring · Java · React
+                Java · Spring · React · TS
               </p>
               <p className="text-xs text-slate-500 mt-0.5">
-                MyBatis · OracleDB & REST API
+                MySQL · Supabase · PWA & RN 확장
               </p>
             </div>
 
             <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-emerald-600 transition-all">
               <div className="flex items-center gap-2.5 text-emerald-700 mb-1.5">
-                <FileCheck2 className="w-4 h-4" />
+                <ShieldCheck className="w-4 h-4" />
                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  Reliability
+                  Verify & Ops (7m)
                 </span>
               </div>
               <p className="text-sm font-semibold text-slate-800">
-                철저한 사전 테스트 & 문서화
+                실무 Linux 점검 · 정량 검증
               </p>
               <p className="text-xs text-slate-500 mt-0.5">
-                배포 안정성 및 무중단 지향
+                고객사 정기점검 · QA · 번들 93.5% 감축
               </p>
             </div>
           </div>
 
           {/* 연락처 및 바로가기 액션 바 */}
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            {/* 이력서 PDF 버튼 */}
+            <Link
+              href="/resume"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-sm transition-all shadow-sm"
+            >
+              <FileText className="w-4 h-4" />
+              <span>이력서 보기 / PDF 저장</span>
+            </Link>
+
             {/* GitHub 링크 */}
             <a
               href={profileData.github}
@@ -123,18 +136,18 @@ export default function Hero() {
             {/* 메일 복사 버튼 */}
             <button
               onClick={() => handleCopy(profileData.email, "email")}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-medium text-sm transition-all shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-medium text-sm transition-all border border-slate-300 shadow-xs cursor-pointer"
             >
               {copiedType === "email" ? (
                 <>
-                  <Check className="w-4 h-4 text-white" />
+                  <Check className="w-4 h-4 text-emerald-700" />
                   <span>이메일 주소 복사됨!</span>
                 </>
               ) : (
                 <>
-                  <Mail className="w-4 h-4" />
+                  <Mail className="w-4 h-4 text-slate-500" />
                   <span>{profileData.email}</span>
-                  <Copy className="w-3.5 h-3.5 opacity-80 ml-0.5" />
+                  <Copy className="w-3.5 h-3.5 opacity-60 ml-0.5" />
                 </>
               )}
             </button>
@@ -142,7 +155,7 @@ export default function Hero() {
             {/* 전화번호 버튼 */}
             <button
               onClick={() => handleCopy(profileData.phone, "phone")}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-medium text-sm transition-all border border-slate-300 shadow-xs"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-medium text-sm transition-all border border-slate-300 shadow-xs cursor-pointer"
             >
               {copiedType === "phone" ? (
                 <>
@@ -164,7 +177,7 @@ export default function Hero() {
               href="#about"
               className="inline-flex flex-col items-center gap-1.5 text-xs text-slate-400 hover:text-slate-600 transition-colors"
             >
-              <span>자세한 이력 및 소개 보기</span>
+              <span>자세한 이력 및 프로젝트 검증 과정 보기</span>
               <ArrowDown className="w-4 h-4 animate-bounce text-emerald-700" />
             </a>
           </div>

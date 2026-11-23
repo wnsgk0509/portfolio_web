@@ -13,29 +13,48 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "신입 풀스택 개발자 이준하의 포트폴리오",
-  description: "Spring Framework 백엔드와 React 프론트엔드를 아우르는 7개월 실무 인턴 경험의 신입 풀스택 개발자 이준하의 포트폴리오입니다.",
-  keywords: ["이준하", "풀스택 개발자", "신입 개발자", "포트폴리오", "Java", "Spring", "React", "MyBatis", "OracleDB", "Full Stack Developer"],
+  title: "AI 서비스 풀스택 개발자 이준하 | 포트폴리오",
+  description:
+    "기획부터 개발·기술 검증·운영까지 완주하는 AI 서비스 풀스택 개발자 이준하의 포트폴리오입니다. 7개월 실무 운영(Java·MySQL·Linux)과 React·TypeScript·Spring·Gemini LLM 파이프라인 경험을 확인하세요.",
+  keywords: [
+    "이준하",
+    "AI 서비스 개발자",
+    "풀스택 개발자",
+    "신입 개발자",
+    "포트폴리오",
+    "Java",
+    "Spring",
+    "React",
+    "TypeScript",
+    "MySQL",
+    "Supabase",
+    "Python",
+    "LLM",
+    "Gemini API",
+  ],
   authors: [{ name: "이준하", url: "https://github.com/wnsgk0509" }],
   openGraph: {
-    title: "신입 풀스택 개발자 이준하의 포트폴리오",
-    description: "Spring Framework 백엔드와 React 프론트엔드를 아우르는 신입 풀스택 개발자 이준하의 포트폴리오",
+    title: "AI 서비스 풀스택 개발자 이준하 | 포트폴리오",
+    description:
+      "기획·개발·기술 검증·운영(E2E)을 완주하는 AI 서비스 풀스택 개발자 이준하의 포트폴리오",
     type: "website",
-    url: "https://github.com/wnsgk0509",
+    url: "https://portfolio-web-iota-fawn.vercel.app/",
   },
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html
       lang="ko"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col bg-white text-slate-800">{children}</body>
+      <body className="min-h-full flex flex-col bg-white text-slate-800">
+        {children}
+      </body>
     </html>
   );
 }

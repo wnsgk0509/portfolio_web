@@ -1,14 +1,17 @@
 import React from "react";
-import { 
-  ShieldCheck, 
-  Headphones, 
-  Layers, 
-  Users, 
-  User, 
-  Mail, 
-  Phone, 
+import Link from "next/link";
+import {
+  ShieldCheck,
+  Sparkles,
+  Layers,
+  Compass,
+  User,
+  Mail,
+  Phone,
   Briefcase,
-  CheckCircle2
+  CheckCircle2,
+  FileText,
+  Clock,
 } from "lucide-react";
 import { profileData } from "@/data/profile";
 
@@ -17,12 +20,12 @@ export default function About() {
     switch (iconName) {
       case "ShieldCheck":
         return <ShieldCheck className="w-6 h-6 text-emerald-700" />;
-      case "Headphones":
-        return <Headphones className="w-6 h-6 text-emerald-700" />;
+      case "Sparkles":
+        return <Sparkles className="w-6 h-6 text-emerald-700" />;
       case "Layers":
         return <Layers className="w-6 h-6 text-emerald-700" />;
-      case "Users":
-        return <Users className="w-6 h-6 text-emerald-700" />;
+      case "Compass":
+        return <Compass className="w-6 h-6 text-emerald-700" />;
       default:
         return <CheckCircle2 className="w-6 h-6 text-emerald-700" />;
     }
@@ -54,46 +57,65 @@ export default function About() {
             </div>
 
             <div className="space-y-4 text-sm">
-              <div className="flex items-start justify-between">
-                <span className="text-slate-500">성명</span>
+              <div className="flex items-start justify-between gap-2">
+                <span className="text-slate-500 shrink-0">성명</span>
                 <span className="font-semibold text-slate-800">{profileData.name}</span>
               </div>
-              <div className="flex items-start justify-between">
-                <span className="text-slate-500">구분</span>
-                <span className="font-semibold text-emerald-800 text-right">{profileData.experience}</span>
+              <div className="flex items-start justify-between gap-2">
+                <span className="text-slate-500 shrink-0">구분</span>
+                <span className="font-semibold text-emerald-800 text-right">
+                  {profileData.experience}
+                </span>
               </div>
-              <div className="flex items-start justify-between">
-                <span className="text-slate-500 flex items-center gap-1.5">
+              <div className="flex items-start justify-between gap-2">
+                <span className="text-slate-500 flex items-center gap-1.5 shrink-0">
+                  <Briefcase className="w-3.5 h-3.5 text-slate-400" /> 희망 직무
+                </span>
+                <span className="font-medium text-slate-800 text-right">
+                  풀스택 · AI 서비스 개발자
+                </span>
+              </div>
+              <div className="flex items-start justify-between gap-2">
+                <span className="text-slate-500 flex items-center gap-1.5 shrink-0">
+                  <Clock className="w-3.5 h-3.5 text-slate-400" /> 입사 가능
+                </span>
+                <span className="font-semibold text-emerald-700 text-right">
+                  즉시 입사 가능
+                </span>
+              </div>
+              <div className="flex items-start justify-between gap-2">
+                <span className="text-slate-500 flex items-center gap-1.5 shrink-0">
                   <Mail className="w-3.5 h-3.5 text-slate-400" /> 이메일
                 </span>
-                <a 
-                  href={`mailto:${profileData.email}`} 
+                <a
+                  href={`mailto:${profileData.email}`}
                   className="font-medium text-slate-700 hover:text-emerald-700 transition-colors text-right break-all"
                 >
                   {profileData.email}
                 </a>
               </div>
-              <div className="flex items-start justify-between">
-                <span className="text-slate-500 flex items-center gap-1.5">
+              <div className="flex items-start justify-between gap-2">
+                <span className="text-slate-500 flex items-center gap-1.5 shrink-0">
                   <Phone className="w-3.5 h-3.5 text-slate-400" /> 연락처
                 </span>
-                <a 
-                  href={`tel:${profileData.phone}`} 
+                <a
+                  href={`tel:${profileData.phone}`}
                   className="font-medium text-slate-700 hover:text-emerald-700 transition-colors text-right"
                 >
                   {profileData.phone}
                 </a>
               </div>
-              <div className="flex items-start justify-between">
-                <span className="text-slate-500 flex items-center gap-1.5">
-                  <Briefcase className="w-3.5 h-3.5 text-slate-400" /> 희망 직무
-                </span>
-                <span className="font-medium text-slate-800 text-right">풀스택 개발자 (Full-Stack)</span>
-              </div>
             </div>
 
-            {/* GitHub 배너 */}
-            <div className="pt-2">
+            {/* 이력서 & GitHub 버튼 */}
+            <div className="pt-2 space-y-2.5">
+              <Link
+                href="/resume"
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold transition-colors shadow-xs"
+              >
+                <FileText className="w-4 h-4" />
+                <span>이력서 보기 / PDF 저장</span>
+              </Link>
               <a
                 href={profileData.github}
                 target="_blank"
@@ -110,7 +132,7 @@ export default function About() {
             {/* 자기소개 텍스트 블록 */}
             <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-4 shadow-sm">
               <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 leading-snug">
-                "{profileData.bioHeadline}"
+                &ldquo;{profileData.bioHeadline}&rdquo;
               </h3>
               <div className="space-y-3.5 text-slate-600 text-sm sm:text-base leading-relaxed">
                 {profileData.bioParagraphs.map((para, idx) => (
@@ -121,10 +143,10 @@ export default function About() {
               </div>
             </div>
 
-            {/* 실무 기반 4대 강점 카드 */}
+            {/* 실무·E2E 기반 4대 강점 카드 */}
             <div>
               <h4 className="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <span>핵심 실무 역량 키워드</span>
+                <span>핵심 역량 키워드 (기획 · AI · 개발 · 검증/운영)</span>
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {profileData.strengths.map((item, idx) => (

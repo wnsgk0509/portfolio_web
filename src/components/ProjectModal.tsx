@@ -1,18 +1,20 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
-import { 
-  X, 
+import {
+  X,
   ExternalLink,
-  Globe, 
-  Calendar, 
-  UserCheck, 
-  Users, 
-  AlertTriangle, 
-  CheckCircle, 
-  Layers, 
-  ArrowRight
+  Globe,
+  Calendar,
+  UserCheck,
+  Users,
+  AlertTriangle,
+  CheckCircle,
+  Layers,
+  ArrowRight,
+  Compass,
+  ShieldCheck,
 } from "lucide-react";
 import GithubIcon from "@/components/GithubIcon";
 import FormattedText, { renderInlineMarkdown } from "@/components/FormattedText";
@@ -23,12 +25,14 @@ interface ProjectModalProps {
   onClose: () => void;
 }
 
-export default function ProjectModal({ project, onClose }: ProjectModalProps) {
-  const [mounted, setMounted] = useState(false);
+const emptySubscribe = () => () => {};
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+export default function ProjectModal({ project, onClose }: ProjectModalProps) {
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -51,7 +55,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   if (!mounted || !project) return null;
 
   return createPortal(
-    <div 
+    <div
       className="fixed inset-0 z-[9999] overflow-y-auto bg-slate-900/60 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
@@ -59,17 +63,22 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     >
       {/* 중앙 정렬 래퍼 */}
       <div className="flex min-h-full items-center justify-center p-3 sm:p-6 text-center">
-        {/* 모달 컨테이너 (클릭 시 닫힘 방지) */}
-        <div 
+        {/* 모달 컨테이너 */}
+        <div
           className="relative w-full max-w-4xl transform rounded-2xl bg-white border border-slate-200 text-left shadow-2xl transition-all z-10 text-slate-800 my-6 sm:my-8 overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           {/* 상단 헤더 바 */}
-          <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+          <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-slate-200 flex items-center justify-between gap-4">
             <div>
-              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
-                프로젝트 상세
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                  {project.categoryBadge || "프로젝트 상세"}
+                </span>
+                <span className="text-[11px] font-medium text-slate-500">
+                  01 기획 · 02 개발 · 03 검증
+                </span>
+              </div>
               <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
                 {renderInlineMarkdown(project.title)}
               </h3>
@@ -77,7 +86,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
+              className="p-2 rounded-xl text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
               aria-label="닫기"
             >
               <X className="w-6 h-6" />
@@ -95,10 +104,10 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     서비스 실제 화면 프리뷰
                   </span>
                   {project.liveUrl && (
-                    <a 
-                      href={project.liveUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-emerald-700 hover:text-emerald-800 font-semibold inline-flex items-center gap-1 hover:underline"
                     >
                       실제 사이트 방문하기 &rarr;
@@ -106,36 +115,48 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   )}
                 </div>
                 <div className="relative w-full max-h-[360px] overflow-hidden bg-slate-100">
-                  <img 
-                    src={project.thumbnail} 
-                    alt={project.title} 
+                  <img
+                    src={project.thumbnail}
+                    alt={project.title}
                     className="w-full h-auto object-cover object-top"
                   />
                 </div>
               </div>
             )}
 
-            {/* 1. 메타 정보 (기간, 역할, 인원, 링크) */}
+            {/* 1. 메타 정보 (줄바꿈 깨짐 수정) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-5 rounded-xl bg-slate-50 border border-slate-200 text-sm">
               <div className="space-y-2.5">
-                <div className="flex items-center gap-2 text-slate-600">
-                  <Calendar className="w-4 h-4 text-emerald-700 shrink-0" />
-                  <span className="text-slate-500">진행 기간:</span>
-                  <span className="font-semibold text-slate-800">{project.period}</span>
+                <div className="flex items-start gap-2 text-slate-600">
+                  <Calendar className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                  <span className="text-slate-500 shrink-0 whitespace-nowrap">
+                    진행 기간:
+                  </span>
+                  <span className="font-semibold text-slate-800">
+                    {project.period}
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-600">
-                  <Users className="w-4 h-4 text-emerald-700 shrink-0" />
-                  <span className="text-slate-500">팀 규모:</span>
-                  <span className="font-semibold text-slate-800">{project.teamSize || "협업"}</span>
+                <div className="flex items-start gap-2 text-slate-600">
+                  <Users className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                  <span className="text-slate-500 shrink-0 whitespace-nowrap">
+                    팀 규모:
+                  </span>
+                  <span className="font-semibold text-slate-800">
+                    {project.teamSize || "협업"}
+                  </span>
                 </div>
               </div>
 
               <div className="space-y-2.5">
                 <div className="flex items-start gap-2 text-slate-600">
                   <UserCheck className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-slate-500">담당 역할: </span>
-                    <span className="font-semibold text-slate-800">{renderInlineMarkdown(project.role)}</span>
+                  <div className="leading-snug">
+                    <span className="text-slate-500 whitespace-nowrap">
+                      담당 역할:{" "}
+                    </span>
+                    <span className="font-semibold text-slate-800">
+                      {renderInlineMarkdown(project.role)}
+                    </span>
                   </div>
                 </div>
 
@@ -186,48 +207,67 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
             </div>
 
-            {/* 3. 프로젝트 소개 (줄바꿈 및 마크다운 포맷 지원) */}
-            <div className="space-y-2">
-              <h4 className="text-base font-bold text-slate-900">📌 프로젝트 소개</h4>
-              <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-xs">
+            {/* 3. STEP 01 — 기획 및 문제 정의 */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-700 text-white">
+                  STEP 01
+                </span>
+                <h4 className="text-base font-bold text-slate-900 flex items-center gap-1.5">
+                  <Compass className="w-4 h-4 text-emerald-700" />
+                  <span>서비스 소개 & 기획 · 문제 정의</span>
+                </h4>
+              </div>
+              <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4 text-sm">
                 <FormattedText content={project.description} />
+                {project.planning && (
+                  <div className="pt-4 border-t border-slate-200">
+                    <FormattedText content={project.planning} />
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* 3-1. 담당 역할 및 상세 기여 */}
-            {project.roleDetails && project.roleDetails.length > 0 && (
-              <div className="space-y-3">
-                <h4 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                  <UserCheck className="w-4 h-4 text-emerald-700" />
-                  <span>🎯 담당 역할 및 상세 기여</span>
-                  <span className="text-xs font-normal text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
-                    {project.roleDetails.length}개 주요 기여 항목
-                  </span>
+            {/* 4. STEP 02 — 개발 (담당 역할 & 핵심 기능) */}
+            <div className="space-y-5">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-700 text-white">
+                  STEP 02
+                </span>
+                <h4 className="text-base font-bold text-slate-900">
+                  아키텍처 · 개발 (담당 역할 및 핵심 기능)
                 </h4>
-                <div className="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
-                  <ul className="space-y-2.5 text-xs sm:text-sm text-slate-700">
+              </div>
+
+              {/* 담당 역할 및 상세 기여 */}
+              {project.roleDetails && project.roleDetails.length > 0 && (
+                <div className="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h5 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                      <UserCheck className="w-4 h-4 text-emerald-700" />
+                      <span>담당 역할 및 상세 기여</span>
+                    </h5>
+                    <span className="text-xs font-normal text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
+                      {project.roleDetails.length}개 항목
+                    </span>
+                  </div>
+                  <ul className="space-y-2 text-xs sm:text-sm text-slate-700">
                     {project.roleDetails.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5 leading-relaxed">
+                      <li
+                        key={idx}
+                        className="flex items-start gap-2.5 leading-relaxed"
+                      >
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 mt-2 shrink-0" />
-                        <span className="flex-1">{renderInlineMarkdown(item)}</span>
+                        <span className="flex-1">
+                          {renderInlineMarkdown(item)}
+                        </span>
                       </li>
                     ))}
                   </ul>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* 4. 핵심 기능 (대분류 & 소분류 계층형 지원) */}
-            <div className="space-y-4">
-              <h4 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <span>⚡ 핵심 기능</span>
-                {project.featureGroups && (
-                  <span className="text-xs font-normal text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
-                    대분류 {project.featureGroups.length}개 영역
-                  </span>
-                )}
-              </h4>
-
+              {/* 핵심 기능 */}
               {project.featureGroups && project.featureGroups.length > 0 ? (
                 <div className="grid grid-cols-1 gap-3.5">
                   {project.featureGroups.map((group, groupIdx) => (
@@ -266,16 +306,38 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               )}
             </div>
 
-            {/* 5. 트러블 슈팅 및 해결방안 (가장 중요한 하이라이트) */}
+            {/* 5. STEP 03 — 기술 검증 및 트러블 슈팅 */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <span className="p-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-700">
-                  <AlertTriangle className="w-4 h-4" />
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-700 text-white">
+                  STEP 03
                 </span>
-                <h4 className="text-base font-bold text-slate-900">
-                  💡 트러블 슈팅 및 문제 해결 과정
+                <h4 className="text-base font-bold text-slate-900 flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-emerald-700" />
+                  <span>기술 검증 및 트러블 슈팅</span>
                 </h4>
               </div>
+
+              {/* 핵심 검증 요약 카드 */}
+              {project.verificationHighlights &&
+                project.verificationHighlights.length > 0 && (
+                  <div className="p-4 sm:p-5 rounded-xl bg-emerald-50/70 border border-emerald-200 space-y-2.5">
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                      Verification Summary (핵심 검증 결과)
+                    </h5>
+                    <ul className="space-y-2 text-xs sm:text-sm text-slate-800">
+                      {project.verificationHighlights.map((item, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2 leading-relaxed"
+                        >
+                          <CheckCircle className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
+                          <span>{renderInlineMarkdown(item)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
               <div className="space-y-4">
                 {project.troubleshooting.map((item, idx) => (
@@ -286,7 +348,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     {/* 트러블슈팅 제목 */}
                     {item.title && (
                       <div className="pb-2.5 border-b border-slate-100 flex items-center gap-2">
-                        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
+                        <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 shrink-0 inline-flex items-center gap-1">
+                          <AlertTriangle className="w-3 h-3" />
                           Issue #{idx + 1}
                         </span>
                         <span className="text-sm sm:text-base font-bold text-slate-900">
@@ -331,7 +394,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     {item.result && (
                       <div className="space-y-1 p-3 rounded-lg bg-teal-50 border-l-3 border-teal-600">
                         <span className="text-xs font-semibold text-teal-800">
-                          Result (개선 결과)
+                          Verification Result (검증 결과)
                         </span>
                         <p className="text-xs sm:text-sm text-teal-900 font-semibold leading-relaxed">
                           {renderInlineMarkdown(item.result)}
@@ -345,12 +408,19 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
             {/* 6. 배운 점 및 회고 */}
             <div className="space-y-3">
-              <h4 className="text-base font-bold text-slate-900">📝 배운 점 및 회고</h4>
+              <h4 className="text-base font-bold text-slate-900">
+                📝 배운 점 및 회고
+              </h4>
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                 {project.retrospective.map((retro, idx) => (
-                  <div key={idx} className="flex items-start gap-2 text-sm text-slate-700">
+                  <div
+                    key={idx}
+                    className="flex items-start gap-2 text-sm text-slate-700"
+                  >
                     <ArrowRight className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
-                    <span className="leading-relaxed">{renderInlineMarkdown(retro)}</span>
+                    <span className="leading-relaxed">
+                      {renderInlineMarkdown(retro)}
+                    </span>
                   </div>
                 ))}
               </div>

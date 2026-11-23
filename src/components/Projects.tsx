@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { 
-  FolderGit2, 
+import {
+  FolderGit2,
   ChevronRight,
   UserCheck,
-  Globe
+  Globe,
+  ShieldCheck,
 } from "lucide-react";
 import GithubIcon from "@/components/GithubIcon";
 import { renderInlineMarkdown } from "@/components/FormattedText";
@@ -27,13 +28,17 @@ export default function Projects({ projects = [] }: ProjectsProps) {
         {/* 섹션 헤더 */}
         <div className="flex flex-col items-center text-center mb-16">
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 mb-3">
-            Projects
+            Projects · Planning → Dev → Verify
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             프로젝트 경험
           </h2>
-          <p className="text-slate-600 text-sm max-w-xl mt-3">
-            실제 서비스의 트러블 슈팅과 문제 해결, 아키텍처 개선에 집중한 프로젝트 목록입니다.
+          <p className="text-slate-600 text-sm max-w-2xl mt-3">
+            모든 프로젝트를{" "}
+            <strong className="font-semibold text-slate-800">
+              기획(문제 정의) → 개발(아키텍처·구현) → 검증(성능 실측·트러블슈팅)
+            </strong>{" "}
+            흐름으로 정리했습니다. 카드를 클릭하면 상세 검증 과정을 확인할 수 있습니다.
           </p>
           <div className="w-12 h-1 bg-emerald-700 rounded mt-4" />
         </div>
@@ -50,43 +55,69 @@ export default function Projects({ projects = [] }: ProjectsProps) {
                 {/* 썸네일 이미지 */}
                 {project.thumbnail && (
                   <div className="relative w-full h-44 sm:h-48 overflow-hidden rounded-xl border border-slate-200/90 bg-slate-50">
-                    <img 
-                      src={project.thumbnail} 
-                      alt={project.title} 
+                    <img
+                      src={project.thumbnail}
+                      alt={project.title}
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
                     />
+                    {project.categoryBadge && (
+                      <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-900/80 text-white backdrop-blur-xs border border-white/15">
+                        {project.categoryBadge}
+                      </span>
+                    )}
                   </div>
                 )}
 
                 {/* 상단 메타 */}
-                <div className="flex items-start justify-between gap-2">
-                  <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 group-hover:bg-emerald-100 transition-colors">
-                    <FolderGit2 className="w-6 h-6" />
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 group-hover:bg-emerald-100 transition-colors">
+                      <FolderGit2 className="w-5 h-5" />
+                    </div>
+                    {project.teamSize && (
+                      <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                        {project.teamSize}
+                      </span>
+                    )}
                   </div>
-                  <span className="text-xs font-medium text-slate-600 bg-slate-50 px-3 py-1 rounded-full border border-slate-200">
+                  <span className="text-xs font-medium text-slate-600 bg-slate-50 px-3 py-1 rounded-full border border-slate-200 shrink-0">
                     {project.period}
                   </span>
                 </div>
 
                 {/* 프로젝트 제목 & 한 줄 요약 */}
                 <div>
-                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-800 transition-colors">
+                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-800 transition-colors leading-snug">
                     {renderInlineMarkdown(project.title)}
                   </h3>
-                  <p className="text-sm text-slate-600 mt-2 line-clamp-2">
+                  <p className="text-sm text-slate-600 mt-2 line-clamp-3 leading-relaxed">
                     {renderInlineMarkdown(project.summary)}
                   </p>
                 </div>
 
                 {/* 담당 역할 */}
-                <div className="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                  <div className="flex items-center gap-1.5 mb-1 text-slate-800 font-semibold">
-                    <UserCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                    <span>담당 역할</span>
+                <div className="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-1 text-slate-800 font-semibold">
+                      <UserCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                      <span>담당 역할</span>
+                    </div>
+                    <p className="line-clamp-2 leading-relaxed text-slate-700">
+                      {renderInlineMarkdown(project.role)}
+                    </p>
                   </div>
-                  <p className="line-clamp-2 leading-relaxed text-slate-700">
-                    {renderInlineMarkdown(project.role)}
-                  </p>
+                  {project.verificationHighlights &&
+                    project.verificationHighlights.length > 0 && (
+                      <div className="pt-2 border-t border-slate-200/80">
+                        <div className="flex items-center gap-1.5 mb-1 text-emerald-800 font-semibold">
+                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                          <span>핵심 검증 포인트</span>
+                        </div>
+                        <p className="line-clamp-2 leading-relaxed text-slate-700">
+                          {renderInlineMarkdown(project.verificationHighlights[0])}
+                        </p>
+                      </div>
+                    )}
                 </div>
 
                 {/* 기술 스택 뱃지 */}
@@ -103,7 +134,7 @@ export default function Projects({ projects = [] }: ProjectsProps) {
               </div>
 
               {/* 하단 액션 버튼 */}
-              <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between">
+              <div className="pt-6 mt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
                 <div className="flex flex-wrap items-center gap-2">
                   {project.githubUrl && (
                     <a
@@ -139,7 +170,7 @@ export default function Projects({ projects = [] }: ProjectsProps) {
                   }}
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-700 hover:text-white transition-all shadow-xs cursor-pointer active:scale-95"
                 >
-                  <span>트러블 슈팅 & 상세 보기</span>
+                  <span>기획 · 개발 · 검증 상세</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                 </button>
               </div>

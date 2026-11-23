@@ -1,13 +1,13 @@
 import React from "react";
-import { 
-  Building2, 
-  GraduationCap, 
-  Award, 
-  Calendar, 
+import {
+  Building2,
+  GraduationCap,
+  Award,
+  Calendar,
   Check,
   BookOpen,
-  Sparkles,
-  Clock
+  Clock,
+  CheckCircle2,
 } from "lucide-react";
 import { profileData } from "@/data/profile";
 
@@ -58,24 +58,59 @@ export default function Experience() {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200 shrink-0">
                     <Calendar className="w-3.5 h-3.5 text-emerald-700" />
                     <span>{job.period}</span>
                   </div>
                 </div>
 
+                {/* 실무 사용 기술 태그 */}
+                {job.techStack && job.techStack.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="text-xs font-semibold text-slate-500 mr-1">
+                      실무 환경:
+                    </span>
+                    {job.techStack.map((tech, tIdx) => (
+                      <span
+                        key={tIdx}
+                        className="px-2.5 py-0.5 text-xs font-semibold rounded-md bg-emerald-50/80 text-emerald-800 border border-emerald-200"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
                 {/* 주요 업무 및 성과 목록 */}
                 <div>
                   <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">
-                    주요 담당 업무 및 성과
+                    주요 담당 업무 및 성과 (개발 · 검증 · 운영)
                   </h4>
                   <ul className="space-y-2.5">
-                    {job.achievements.map((item, itemIdx) => (
-                      <li key={itemIdx} className="flex items-start gap-2.5 text-sm text-slate-700">
-                        <Check className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
+                    {job.achievements.map((item, itemIdx) => {
+                      const [label, ...rest] = item.split(":");
+                      const hasLabel = rest.length > 0;
+                      return (
+                        <li
+                          key={itemIdx}
+                          className="flex items-start gap-2.5 text-sm text-slate-700 leading-relaxed"
+                        >
+                          <Check className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
+                          <span>
+                            {hasLabel ? (
+                              <>
+                                <strong className="font-semibold text-slate-900">
+                                  {label}:
+                                </strong>{" "}
+                                {rest.join(":").trim()}
+                              </>
+                            ) : (
+                              item
+                            )}
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               </div>
@@ -131,11 +166,11 @@ export default function Experience() {
                   key={idx}
                   className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3 hover:border-emerald-600 transition-all"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <h3 className="font-bold text-slate-900 text-base">
                       {cert.name}
                     </h3>
-                    <span className="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 shrink-0">
                       {cert.status}
                     </span>
                   </div>
@@ -151,7 +186,7 @@ export default function Experience() {
 
         {/* 2. 직무 교육 및 훈련 (Training & Bootcamps) */}
         <div className="space-y-6 pt-6 border-t border-slate-100">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2.5 text-lg font-bold text-slate-900">
               <span className="p-2 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700">
                 <BookOpen className="w-5 h-5" />
@@ -172,24 +207,26 @@ export default function Experience() {
                 <div
                   key={idx}
                   className={`relative bg-white border rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-all ${
-                    isOngoing 
-                      ? "border-emerald-500/80 ring-2 ring-emerald-500/10" 
+                    isOngoing
+                      ? "border-emerald-500/80 ring-2 ring-emerald-500/10"
                       : "border-slate-200 hover:border-emerald-600"
                   }`}
                 >
                   <div className="space-y-3.5">
                     {/* 상단 뱃지 & 기간 */}
-                    <div className="flex items-start justify-between gap-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span
                         className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border ${
                           isOngoing
                             ? "bg-emerald-50 text-emerald-800 border-emerald-300"
                             : isCompleted
-                            ? "bg-blue-50 text-blue-800 border-blue-200"
-                            : "bg-slate-100 text-slate-700 border-slate-200"
+                              ? "bg-blue-50 text-blue-800 border-blue-200"
+                              : "bg-slate-100 text-slate-700 border-slate-200"
                         }`}
                       >
-                        {isOngoing && <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />}
+                        {isOngoing && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                        )}
                         {t.status}
                       </span>
 
@@ -200,6 +237,14 @@ export default function Experience() {
                         </span>
                       )}
                     </div>
+
+                    {/* 조기 취업 / 즉시 입사 안내 배지 */}
+                    {t.statusNote && (
+                      <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                        <span>{t.statusNote}</span>
+                      </div>
+                    )}
 
                     {/* 과정명 & 기관명 */}
                     <div>
